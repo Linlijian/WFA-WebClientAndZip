@@ -4,12 +4,14 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace WFA_WebClient
 {
@@ -136,6 +138,15 @@ namespace WFA_WebClient
             DownloadFile("https://raw.githubusercontent.com/Linlijian/SDMST/master/DBConnectionBase/bin.rar", @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Debug\A.rar");
         }
 
-       
+        private void btnZip_Click(object sender, EventArgs e)
+        {
+            string startPath = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Debug";
+            string zipPath = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\tesaat.zip";
+            string extractPath = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\extract";
+
+            ZipFile.CreateFromDirectory(startPath, zipPath, CompressionLevel.Fastest, true);
+
+            ZipFile.ExtractToDirectory(zipPath, extractPath);
+        }
     }
 }
