@@ -1,24 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace WFA_WebClient
 {
     public partial class Form1 : Form
     {
-        
-        WebClient webClient;          
+
+        WebClient webClient;
         Stopwatch sw = new Stopwatch();
         public Form1()
         {
@@ -35,7 +28,7 @@ namespace WFA_WebClient
 
             ////this ok!
             using (WebClient wc = new WebClient())
-            {                
+            {
                 wc.DownloadProgressChanged += wc_DownloadProgressChanged;
                 wc.DownloadFileAsync(
                     // Param1 = Link of file
@@ -46,7 +39,7 @@ namespace WFA_WebClient
                 wc.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
             }
 
-            
+
         }
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
@@ -59,18 +52,20 @@ namespace WFA_WebClient
 
         private void startDownload()
         {
-            Thread thread = new Thread(() => {
+            Thread thread = new Thread(() =>
+            {
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
                 client.DownloadFileAsync(new Uri("https://raw.githubusercontent.com/Linlijian/SDMST/master/DBConnectionBase/bin.rar"), @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Debug\test.rar");
-                
+
             });
             thread.Start();
         }
         void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            this.BeginInvoke((MethodInvoker)delegate {
+            this.BeginInvoke((MethodInvoker)delegate
+            {
                 double bytesIn = double.Parse(e.BytesReceived.ToString());
                 double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
                 double percentage = bytesIn / totalBytes * 100;
@@ -80,7 +75,8 @@ namespace WFA_WebClient
         }
         void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            this.BeginInvoke((MethodInvoker)delegate {
+            this.BeginInvoke((MethodInvoker)delegate
+            {
                 label2.Text = "Completed";
             });
         }
@@ -144,9 +140,34 @@ namespace WFA_WebClient
             string zipPath = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\tesaat.zip";
             string extractPath = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\extract";
 
-            ZipFile.CreateFromDirectory(startPath, zipPath, CompressionLevel.Fastest, true);
+            ZipFile.CreateFromDirectory(startPath, zipPath, System.IO.Compression.CompressionLevel.Fastest, true);
 
             ZipFile.ExtractToDirectory(zipPath, extractPath);
+
+            //    SevenZipBase.SetLibraryPath(Path.Combine(
+            //Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? Environment.CurrentDirectory,
+            //"7za.dll"));
+
+            //string dll = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Debug\x64\7z.dll";
+            //SevenZipCompressor.SetLibraryPath(dll);
+            //SevenZipCompressor compressor = new SevenZipCompressor();
+            //compressor.EncryptHeaders = true;
+            //compressor.CompressFilesEncrypted(zipPath, "aaa", extractPath);
+        }
+
+        private void btnZipPW_Click(object sender, EventArgs e)
+        {
+            //ZipFile.OpenRead(@"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\tesaat.zip");
+            //using ()
+            //{
+            //    // add this map file into the "images" directory in the zip archive
+            //    ZipFile.AddFile("c:\\images\\personal\\7440-N49th.png", "images");
+            //    // add the report into a different directory in the archive
+            //    zip.AddFile("c:\\Reports\\2008-Regional-Sales-Report.pdf", "files");
+            //    zip.AddFile("ReadMe.txt");
+            //    zip.Save("MyZipFile.zip");
+            //}
         }
     }
 }
+
