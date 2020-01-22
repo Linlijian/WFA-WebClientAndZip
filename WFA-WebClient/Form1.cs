@@ -162,8 +162,8 @@ namespace WFA_WebClient
             //SevenZipCompressor.SetLibraryPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "7z.dll"));
 
             string dllPath = Environment.Is64BitProcess ?
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7zx64.dll")
-                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7zx86.dll");
+               Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "x64", "7z.dll")
+                   : Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "x86", "7z.dll");
 
             SevenZipBase.SetLibraryPath(dllPath);
 
@@ -209,8 +209,8 @@ namespace WFA_WebClient
 
 
             string dllPath = Environment.Is64BitProcess ?
-               Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7zx64.dll")
-                   : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7zx86.dll");
+               Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "x64", "7z.dll")
+                   : Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "x86", "7z.dll");
 
             SevenZipBase.SetLibraryPath(dllPath);
 
