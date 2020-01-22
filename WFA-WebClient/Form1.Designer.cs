@@ -38,6 +38,7 @@
             this.btnDownload3 = new System.Windows.Forms.Button();
             this.btnZip = new System.Windows.Forms.Button();
             this.btnZipPW = new System.Windows.Forms.Button();
+            this.btnExtract = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnDownload
@@ -133,11 +134,22 @@
             this.btnZipPW.UseVisualStyleBackColor = true;
             this.btnZipPW.Click += new System.EventHandler(this.btnZipPW_Click);
             // 
+            // btnExtract
+            // 
+            this.btnExtract.Location = new System.Drawing.Point(52, 84);
+            this.btnExtract.Name = "btnExtract";
+            this.btnExtract.Size = new System.Drawing.Size(75, 23);
+            this.btnExtract.TabIndex = 8;
+            this.btnExtract.Text = "Extract";
+            this.btnExtract.UseVisualStyleBackColor = true;
+            this.btnExtract.Click += new System.EventHandler(this.btnExtract_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(282, 196);
+            this.Controls.Add(this.btnExtract);
             this.Controls.Add(this.btnZipPW);
             this.Controls.Add(this.btnZip);
             this.Controls.Add(this.labelDownloaded);
@@ -167,6 +179,7 @@
         private System.Windows.Forms.Button btnDownload3;
         private System.Windows.Forms.Button btnZip;
         private System.Windows.Forms.Button btnZipPW;
+        private System.Windows.Forms.Button btnExtract;
     }
 }
 

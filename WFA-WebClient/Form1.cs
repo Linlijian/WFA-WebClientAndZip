@@ -1,11 +1,13 @@
-﻿using System;
+﻿using SevenZip;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.IO.Compression;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-
 namespace WFA_WebClient
 {
     public partial class Form1 : Form
@@ -157,16 +159,86 @@ namespace WFA_WebClient
 
         private void btnZipPW_Click(object sender, EventArgs e)
         {
-            //ZipFile.OpenRead(@"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\tesaat.zip");
-            //using ()
-            //{
-            //    // add this map file into the "images" directory in the zip archive
-            //    ZipFile.AddFile("c:\\images\\personal\\7440-N49th.png", "images");
-            //    // add the report into a different directory in the archive
-            //    zip.AddFile("c:\\Reports\\2008-Regional-Sales-Report.pdf", "files");
-            //    zip.AddFile("ReadMe.txt");
-            //    zip.Save("MyZipFile.zip");
-            //}
+            //SevenZipCompressor.SetLibraryPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "7z.dll"));
+
+            string dllPath = Environment.Is64BitProcess ?
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7zx64.dll")
+                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7zx86.dll");
+
+            SevenZipBase.SetLibraryPath(dllPath);
+
+            //SevenZipBase.SetLibraryPath(path);
+
+            //    string dll = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Debug\x64\7z.dll";
+            //    SevenZipBase.SetLibraryPath(Path.Combine(
+            //Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? Environment.CurrentDirectory,
+            //"7za.dll"));
+            SevenZipCompressor compressor = new SevenZipCompressor();
+            //string startPath = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\qw";
+            string password = @"a";
+            string destinationFile = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\tesaat.zip";
+            string[] sourceFiles = Directory.GetFiles(@"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\aaa\");
+
+            if (String.IsNullOrWhiteSpace(password))
+            {
+                compressor.CompressFiles(destinationFile, sourceFiles);
+            }
+            else
+            {
+                //optional
+                compressor.EncryptHeaders = true;
+                compressor.CompressFilesEncrypted(destinationFile, password, sourceFiles);
+
+                
+            }
+
+        }
+
+        private void btnExtract_Click(object sender, EventArgs e)
+        {
+            //SevenZipCompressor.SetLibraryPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "7z.dll"));
+
+            //SevenZipExtractor zipFile = new SevenZipExtractor("tesaat.zip", "a");
+            //zipFile.ExtractArchive(@"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\qw");
+
+            //Process p = new Process();
+            ////p.StartInfo.FileName = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\tesaat.zip";
+            //p.StartInfo.FileName = @"C:\Program Files (x86)\WinRAR\UnRAR.exe";
+            //p.StartInfo.Arguments = "rar x -p" + 'a' + @" E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\tesaat.zip" + @" E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\qw";
+            //p.Start();
+
+
+            string dllPath = Environment.Is64BitProcess ?
+               Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7zx64.dll")
+                   : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7zx86.dll");
+
+            SevenZipBase.SetLibraryPath(dllPath);
+
+            string zipFile = @"E:\WindownFormApplication\WFA-WebClient\WFA-WebClient\bin\Release\tesaat.zip";
+            Stream stream = File.OpenRead(zipFile);
+            using (SevenZipExtractor extr = new SevenZipExtractor(stream, "a"))
+            {
+                SevenZipExtractor Ext = new SevenZipExtractor(zipFile,"a");
+                var DestDir = Application.StartupPath;
+                if (Ext.Check())
+                    // 'Extract files to destination''
+                    Ext.BeginExtractArchive(DestDir+"\\test");
+                foreach (ArchiveFileInfo archiveFileInfo in extr.ArchiveFileData)
+                {
+                    if (!archiveFileInfo.IsDirectory)
+                    {
+                        using (var mem = new MemoryStream())
+                        {
+                            //save detail in rar
+                            extr.ExtractFile(archiveFileInfo.Index, mem);
+
+                            string shortFileName = Path.GetFileName(archiveFileInfo.FileName);
+                            byte[] content = mem.ToArray();
+                            //...
+                        }
+                    }
+                }
+            }
         }
     }
 }
