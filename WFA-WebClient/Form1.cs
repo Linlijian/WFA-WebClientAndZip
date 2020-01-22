@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
@@ -233,12 +234,13 @@ namespace WFA_WebClient
                             extr.ExtractFile(archiveFileInfo.Index, mem);
 
                             string shortFileName = Path.GetFileName(archiveFileInfo.FileName);
-                            byte[] content = mem.ToArray();
+                            byte[] content = mem.ToArray();                           
                             //...
                         }
                     }
                 }
             }
+            pictureBox1.Image = Image.FromFile(Application.StartupPath + "\\test\\test01.png");
         }
     }
 }
